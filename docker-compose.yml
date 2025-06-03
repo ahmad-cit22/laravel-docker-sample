@@ -1,1 +1,38 @@
-version: "3"
+version: '3.8'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: laravel-docker-sample-app
+        container_name: laravel-docker-sample-container
+        volumes:
+            - .:/var/www
+        ports:
+            - "8000:9000"
+        depends_on:
+            - db
+        environment:
+            DB_CONNECTION: pgsql
+            DB_HOST: db
+            DB_PORT: 5432
+            DB_DATABASE: help_nest_ai
+            DB_USERNAME: xg-nafis
+            DB_PASSWORD: password
+
+    db:
+        image: postgres:16
+        container_name: docker-sample-db-container
+        restart: always
+        environment:
+            POSTGRES_DB: help_nest_ai
+            POSTGRES_USER: xg-nafis
+            POSTGRES_PASSWORD: password
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+
+volumes:
+    pgdata:
